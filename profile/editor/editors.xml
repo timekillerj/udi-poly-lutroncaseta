@@ -3,4 +3,7 @@
     <editor id="bool">
         <range uom="2" subset="0,1" />
     </editor>
+    <editor id="shade_status">
+        <range uom="51" min="0" max="100" prec="1" />
+    </editor>
 </editors>

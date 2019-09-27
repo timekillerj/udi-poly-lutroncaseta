@@ -7,30 +7,25 @@ import polyinterface
 
 import sys
 
-LOGGER = polyinterface.LOGGER
+from lutron_caseta_nodes.LutronCasetaController import LutronCasetaController
 
-# Lutron Caseta Controller
-from lutron_caseta_nodes import LutronCasetaController
+LOGGER = polyinterface.LOGGER
 
 if __name__ == "__main__":
     try:
         polyglot = polyinterface.Interface('LutronCaseta')
-
+        """
+        Start MQTT and connects to Polyglot.
+        """
         polyglot.start()
         """
-        Starts MQTT and connects to Polyglot.
+        Create the Controller Node and pass in the Interface
         """
         control = LutronCasetaController(polyglot)
         """
-        Creates the Controller Node and passes in the Interface
+        Sit around and do nothing forever.
         """
         control.runForever()
-        """
-        Sits around and does nothing forever, keeping your program running.
-        """
     except (KeyboardInterrupt, SystemExit):
         polyglot.stop()
         sys.exit(0)
-        """
-        Catch SIGTERM or Control-C and exit cleanly.
-        """

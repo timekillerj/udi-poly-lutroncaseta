@@ -17,17 +17,17 @@
             </accepts>
         </cmds>
     </nodeDef>
-	<!-- templatenodeid -->
-    <nodeDef id="templatenodeid" nls="tmplnode">
+	<!-- serenashade -->
+    <nodeDef id="serenashade" nls="shadenode">
         <editors />
         <sts>
-            <st id="ST" editor="bool" />
+            <st id="ST" editor="shade_status" />
         </sts>
         <cmds>
             <sends />
-            <accepts>
-                <cmd id="DON" />
-                <cmd id="DOF" />
+	          <accepts>
+              <cmd id="DON" />
+	            <cmd id="DOF" />
             </accepts>
         </cmds>
     </nodeDef>

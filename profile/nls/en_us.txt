@@ -8,5 +8,8 @@ CMD-ctl-REMOVE_NOTICE_TEST-NAME = Remove Notice Test
 ST-ctl-ST-NAME = NodeServer Online
 
 # mynodetype
-ND-tmplnode-NAME = Template Node
-ST-tmplnode-ST-NAME = Node Status
+ND-serenashade-NAME = Serena Shade
+ST-serenashade-ST-NAME = Node Status
+CMD-DON-NAME = Open
+CMD-DOF-NAME = Close
+CMD-DIM-NAME = Update
