@@ -164,7 +164,7 @@ class LutronCasetaController(polyinterface.Controller):
 
     def start(self):
         LOGGER.info('Started LutronCaseta NodeServer')
-        self.poly.add_custom_config_docs("<div style='font-size: 15px;'><b>Follow <a href='{}' target='_blank'>this link</a> to obtain OAUTH code</b></div>".format(AUTHORIZE_URL))
+        self.poly.add_custom_config_docs("<b>To obtain oauth code, follow <a href='{}' target='_blank'>this link</a> and copy the 'code' portion of the error page url</b>".format(AUTHORIZE_URL))
         self.check_params()
 
         if not self.lutron_bridge_ip and not self.oauth_code:
@@ -184,13 +184,13 @@ class LutronCasetaController(polyinterface.Controller):
         # User socket to get smartbridge certificate
         if self.get_bridge_cert(ssl_socket):
             LOGGER.info("Bridge certificate saved")
-            asyncio.set_event_loop(asyncio.new_event_loop())
+            loop = asyncio.get_event_loop()
             self.sb = Smartbridge.create_tls(hostname=self.lutron_bridge_ip,
                                              keyfile='./caseta.key',
                                              certfile='./caseta.crt',
-                                             ca_certs='caseta-bridge.crt')
-            io_loop = asyncio.get_event_loop()
-            io_loop.run_until_complete(self.sb.connect())
+                                             ca_certs='caseta-bridge.crt',
+                                             loop=loop)
+            loop.run_until_complete(self.sb.connect())
             if self.sb.is_connected():
                 LOGGER.info("Successfully connected to bridge!")
             else:
