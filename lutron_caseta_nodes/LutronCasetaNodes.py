@@ -25,10 +25,13 @@ class BaseNode(polyinterface.Node):
         self.current_state = current_state
 
     def send_command(self, device, value):
+        LOGGER.info("Sending value to Smart Bridge for device {}: {}".format(device, value))
         if not self.sb.is_connected():
+            LOGGER.info("Not connected to bridge, reconnecting...")
             loop = asyncio.get_event_loop()
             loop.run_until_complete(self.sb.connect())
-        self.sb.set_value(device, value)
+        result = self.sb.set_value(device, value)
+        LOGGER.info("send_command result: {}".format(result))
 
 
 class SerenaHoneycombShade(BaseNode):
@@ -46,12 +49,16 @@ class SerenaHoneycombShade(BaseNode):
 
     def setOpenLevel(self, command):
         LOGGER.info("setOpenLevel: command {}".format(command))
-        self.send_command(command['address'], int(command['value']))
-        if int(command['value']) > 0:
+        if command.get('value'):
+            ol = int(command['value'])
+        else:
+            ol = int(command.get('query', {}).get('OL.uom51'))
+        self.send_command(command['address'], ol)
+        if ol > 0:
             self.setDriver('ST', 0)
         else:
             self.setDriver('ST', 100)
-        self.setDriver('OL', int(command['value']))
+        self.setDriver('OL', ol)
 
     drivers = [
         {'driver': 'ST', 'value': 0, 'uom': 79},

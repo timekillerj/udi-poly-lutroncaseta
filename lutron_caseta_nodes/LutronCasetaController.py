@@ -162,6 +162,20 @@ class LutronCasetaController(polyinterface.Controller):
 
         return leap_response['Body']['PingResponse']['LEAPVersion']
 
+    def bridge_connect(self):
+        asyncio.set_event_loop(asyncio.new_event_loop())
+        loop = asyncio.get_event_loop()
+        self.sb = Smartbridge.create_tls(hostname=self.lutron_bridge_ip,
+                                         keyfile='./caseta.key',
+                                         certfile='./caseta.crt',
+                                         ca_certs='caseta-bridge.crt',
+                                         loop=loop)
+        loop.run_until_complete(self.sb.connect())
+        if self.sb.is_connected():
+            LOGGER.info("Successfully connected to bridge!")
+        else:
+            LOGGER.error("Could not connect to bridge")
+
     def start(self):
         LOGGER.info('Started LutronCaseta NodeServer')
         self.poly.add_custom_config_docs("<b>To obtain oauth code, follow <a href='{}' target='_blank'>this link</a> and copy the 'code' portion of the error page url</b>".format(AUTHORIZE_URL))
@@ -184,18 +198,8 @@ class LutronCasetaController(polyinterface.Controller):
         # User socket to get smartbridge certificate
         if self.get_bridge_cert(ssl_socket):
             LOGGER.info("Bridge certificate saved")
-            asyncio.set_event_loop(asyncio.new_event_loop())
-            loop = asyncio.get_event_loop()
-            self.sb = Smartbridge.create_tls(hostname=self.lutron_bridge_ip,
-                                             keyfile='./caseta.key',
-                                             certfile='./caseta.crt',
-                                             ca_certs='caseta-bridge.crt',
-                                             loop=loop)
-            loop.run_until_complete(self.sb.connect())
-            if self.sb.is_connected():
-                LOGGER.info("Successfully connected to bridge!")
-            else:
-                LOGGER.error("Could not connect to bridge")
+            self.bridge_connect()
+
         ssl_socket.close()
 
         self.discover()
@@ -207,7 +211,7 @@ class LutronCasetaController(polyinterface.Controller):
         or longPoll. No need to Super this method the parent version does nothing.
         The timer can be overriden in the server.json.
         """
-        pass
+        self.discover()
 
     def longPoll(self):
         """
@@ -216,7 +220,7 @@ class LutronCasetaController(polyinterface.Controller):
         or shortPoll. No need to Super this method the parent version does nothing.
         The timer can be overriden in the server.json.
         """
-        self.discover()
+        self.bridge_connect()
 
     def query(self):
         """
@@ -237,7 +241,9 @@ class LutronCasetaController(polyinterface.Controller):
         """
         # self.addNode(LutronCasetaSmartBridge(self, self.address, 'smartbridgeaddr', 'Caseta Smart Bridge'))
         devices = self.sb.get_devices()
-        LOGGER.info("DEVICES: {}".format(devices))
+        scenes = self.sb.get_scenes()
+        # LOGGER.info("DEVICES: {}".format(devices))
+        LOGGER.info("SCENES: {}".format(scenes))
         for device_id, device in devices.items():
             """
             '1': {'device_id': '1', 'name': 'Smart Bridge 2', 'type': 'SmartBridge', 'zone': None, 'current_state': -1},
