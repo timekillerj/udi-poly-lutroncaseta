@@ -184,6 +184,7 @@ class LutronCasetaController(polyinterface.Controller):
         # User socket to get smartbridge certificate
         if self.get_bridge_cert(ssl_socket):
             LOGGER.info("Bridge certificate saved")
+            asyncio.set_event_loop(asyncio.new_event_loop())
             loop = asyncio.get_event_loop()
             self.sb = Smartbridge.create_tls(hostname=self.lutron_bridge_ip,
                                              keyfile='./caseta.key',

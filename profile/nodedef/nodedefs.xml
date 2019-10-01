@@ -28,7 +28,7 @@
             <sends />
 	          <accepts>
               <cmd id="OL">
-                <p id="" editor="shade_status" init="OL" />
+                <p id="OL" editor="shade_status" init="OL" />
               </cmd>
               <cmd id="DON" />
 	            <cmd id="DOF" />

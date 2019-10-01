@@ -2,4 +2,5 @@ caseta-bridge.crt
 caseta.crt
 caseta.key
 logs/*
+lutron_caseta_nodes/__pycache__/*
 .sw*

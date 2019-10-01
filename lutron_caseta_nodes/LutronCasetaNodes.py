@@ -44,6 +44,15 @@ class SerenaHoneycombShade(BaseNode):
         self.setDriver('ST', 100)
         self.setDriver('OL', 0)
 
+    def setOpenLevel(self, command):
+        LOGGER.info("setOpenLevel: command {}".format(command))
+        self.send_command(command['address'], int(command['value']))
+        if int(command['value']) > 0:
+            self.setDriver('ST', 0)
+        else:
+            self.setDriver('ST', 100)
+        self.setDriver('OL', int(command['value']))
+
     drivers = [
         {'driver': 'ST', 'value': 0, 'uom': 79},
         {'driver': 'OL', 'value': 0, 'uom': 51}
@@ -53,4 +62,5 @@ class SerenaHoneycombShade(BaseNode):
     commands = {
         'DON': setOpen,
         'DOF': setClose,
+        'OL': setOpenLevel,
     }

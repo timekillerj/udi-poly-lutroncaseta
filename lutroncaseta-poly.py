@@ -4,7 +4,6 @@ This is a NodeServer for Polyglot v2 written in Python3
 by timekillerj (Jason Donahue) timekillerj@gmail.com
 """
 import polyinterface
-import asyncio
 
 import sys
 
@@ -14,7 +13,6 @@ LOGGER = polyinterface.LOGGER
 
 if __name__ == "__main__":
     try:
-        asyncio.set_event_loop(asyncio.new_event_loop())
         polyglot = polyinterface.Interface('LutronCaseta')
         """
         Start MQTT and connects to Polyglot.
