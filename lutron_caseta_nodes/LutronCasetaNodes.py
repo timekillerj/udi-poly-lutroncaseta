@@ -1,11 +1,21 @@
 """ Node classes used by the Node Server. """
 import polyinterface
 
+import asyncio
+
 LOGGER = polyinterface.LOGGER
 
 
-class SerenaHoneycombShade(polyinterface.Node):
-    def __init__(self, controller, primary, address, name, sb, type, zone, current_state):
+class BaseNode(polyinterface.Node):
+    def __init__(self,
+                 controller,
+                 primary,
+                 address,
+                 name,
+                 sb,
+                 type,
+                 zone,
+                 current_state):
         super().__init__(controller, primary, address, name)
         self.sb = sb
         self.name = name
@@ -14,19 +24,29 @@ class SerenaHoneycombShade(polyinterface.Node):
         self.zone = zone
         self.current_state = current_state
 
+    def send_command(self, device, value):
+        if not self.sb.is_connected():
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.sb.connect())
+        self.sb.set_value(device, value)
+
+
+class SerenaHoneycombShade(BaseNode):
     def setOpen(self, command):
         LOGGER.info("setOpen: command {}".format(command))
-        self.sb.set_value(command['address'], 100)
-        self.setDriver('ST', 100)
+        self.send_command(command['address'], 100)
+        self.setDriver('ST', 0)
+        self.setDriver('OL', 100)
 
     def setClose(self, command):
         LOGGER.info("setClose: command {}".format(command))
-        self.sb.set_value(command['address'], 0)
-        self.setDriver('ST', 0)
+        self.send_command(command['address'], 0)
+        self.setDriver('ST', 100)
+        self.setDriver('OL', 0)
 
-    "Hints See: https://github.com/UniversalDevicesInc/hints"
     drivers = [
-        {'driver': 'ST', 'value': 0, 'uom': 51},
+        {'driver': 'ST', 'value': 0, 'uom': 79},
+        {'driver': 'OL', 'value': 0, 'uom': 51}
     ]
     id = 'serenashade'
 
