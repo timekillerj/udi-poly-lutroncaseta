@@ -12,6 +12,7 @@ ND-serenashade-NAME = Serena Shade
 ST-serenashade-ST-NAME = Shade Status
 CMD-DON-NAME = Open
 CMD-DOF-NAME = Close
+CMD-OL-NAME = Open Level
 ST-serenashade-LEVEL-NAME = Open Level
 CMD-serenashade-OL-NAME = Set Open Level
 ST-GV0-NAME = Shade Status
