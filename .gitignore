@@ -2,3 +2,4 @@ caseta-bridge.crt
 caseta.crt
 caseta.key
 logs/*
+.sw*
