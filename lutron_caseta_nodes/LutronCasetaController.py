@@ -220,7 +220,7 @@ class LutronCasetaController(polyinterface.Controller):
         or shortPoll. No need to Super this method the parent version does nothing.
         The timer can be overriden in the server.json.
         """
-        self.bridge_connect()
+        pass
 
     def query(self):
         """
