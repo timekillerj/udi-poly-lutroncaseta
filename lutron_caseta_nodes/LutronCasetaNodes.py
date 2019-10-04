@@ -12,17 +12,12 @@ class BaseNode(polyinterface.Node):
                  primary,
                  address,
                  name,
-                 sb,
-                 type,
-                 zone,
-                 current_state):
-        super().__init__(controller, primary, address, name)
+                 sb):
+        # Each device should be it's own primary
+        super().__init__(controller, address, address, name)
         self.sb = sb
         self.name = name
         self.address = address
-        self.type = type
-        self.zone = zone
-        self.current_state = current_state
 
     def send_command(self, device, value):
         LOGGER.info("Sending value to Smart Bridge for device {}: {}".format(device, value))
@@ -34,7 +29,37 @@ class BaseNode(polyinterface.Node):
         LOGGER.info("send_command result: {}".format(result))
 
 
+class Scene(BaseNode):
+    def activate(self, command):
+        LOGGER.info("activate: command {}".format(command))
+        self.sb.activate_scene(command['address'])
+
+    drivers = []
+    id = 'scene'
+
+    commands = {
+        'DON': activate,
+    }
+
+
 class SerenaHoneycombShade(BaseNode):
+    def __init__(self,
+                 controller,
+                 primary,
+                 address,
+                 name,
+                 sb,
+                 type,
+                 zone,
+                 current_state):
+        super().__init__(controller, primary, address, name, sb)
+        self.sb = sb
+        self.name = name
+        self.address = address
+        self.type = type
+        self.zone = zone
+        self.current_state = current_state
+
     def setOpen(self, command):
         LOGGER.info("setOpen: command {}".format(command))
         self.send_command(command['address'], 100)

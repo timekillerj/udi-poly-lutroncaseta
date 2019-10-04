@@ -35,4 +35,15 @@
             </accepts>
         </cmds>
     </nodeDef>
+  <!-- scene -->
+    <nodeDef id="scene" nls="scenenode">
+      <editors />
+      <sts />
+      <cmds>
+        <sends />
+        <accepts>
+          <cmd id="DON" />
+        </accepts>
+      </cmds>
+    </nodeDef>
 </nodeDefs>

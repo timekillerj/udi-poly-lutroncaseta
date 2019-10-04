@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from urllib.parse import urlencode
 from pylutron_caseta.smartbridge import Smartbridge
 
-from lutron_caseta_nodes.LutronCasetaNodes import SerenaHoneycombShade
+from lutron_caseta_nodes.LutronCasetaNodes import SerenaHoneycombShade, Scene
 
 
 LOGGER = polyinterface.LOGGER
@@ -242,8 +242,7 @@ class LutronCasetaController(polyinterface.Controller):
         # self.addNode(LutronCasetaSmartBridge(self, self.address, 'smartbridgeaddr', 'Caseta Smart Bridge'))
         devices = self.sb.get_devices()
         scenes = self.sb.get_scenes()
-        # LOGGER.info("DEVICES: {}".format(devices))
-        LOGGER.info("SCENES: {}".format(scenes))
+
         for device_id, device in devices.items():
             """
             '1': {'device_id': '1', 'name': 'Smart Bridge 2', 'type': 'SmartBridge', 'zone': None, 'current_state': -1},
@@ -260,12 +259,28 @@ class LutronCasetaController(polyinterface.Controller):
                 NodeType(
                     self,
                     self.address,
-                    device.get('device_id'),
+                    'device' + str(device.get('device_id')),
                     device.get('name'),
                     self.sb,
                     device.get('type'),
                     device.get('zone'),
                     device.get('current_state')
+                )
+            )
+
+        for scene_id, scene in scenes.items():
+            """
+            '1': {'scene_id': '1', 'name': 'All Close'},
+            '2': {'scene_id': '2', 'name': 'All Open'},
+            '3': {'scene_id': '3', 'name': 'All Halfway'}
+            """
+            self.addNode(
+                Scene(
+                    self,
+                    self.address,
+                    'scene' + str(scene.get('scene_id')),
+                    scene.get('name'),
+                    self.sb
                 )
             )
 

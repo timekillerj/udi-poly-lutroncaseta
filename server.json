@@ -13,7 +13,7 @@
         {
             "title": "lutroncaseta: a NodeServer for Lutron Caseta integration",
             "author": "timekillerj",
-            "version": "0.0.2",
+            "version": "0.0.3",
             "date": "September 24 2019",
             "source": "https://github.com/timekillerj/udi-poly-lutroncaseta",
             "license": "https://github.com/timekillerj/udi-poly-lutroncaseta/master/LICENSE"
