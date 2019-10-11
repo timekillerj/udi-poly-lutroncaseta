@@ -32,7 +32,8 @@ class BaseNode(polyinterface.Node):
 class Scene(BaseNode):
     def activate(self, command):
         LOGGER.info("activate: command {}".format(command))
-        self.sb.activate_scene(command['address'])
+        address = command['address'].replace('scene', '', 1)
+        self.sb.activate_scene(address)
 
     drivers = []
     id = 'scene'
@@ -62,23 +63,26 @@ class SerenaHoneycombShade(BaseNode):
 
     def setOpen(self, command):
         LOGGER.info("setOpen: command {}".format(command))
-        self.send_command(command['address'], 100)
+        address = command['address'].replace('device', '', 1)
+        self.send_command(address, 100)
         self.setDriver('ST', 0)
         self.setDriver('OL', 100)
 
     def setClose(self, command):
         LOGGER.info("setClose: command {}".format(command))
-        self.send_command(command['address'], 0)
+        address = command['address'].replace('device', '', 1)
+        self.send_command(address, 0)
         self.setDriver('ST', 100)
         self.setDriver('OL', 0)
 
     def setOpenLevel(self, command):
         LOGGER.info("setOpenLevel: command {}".format(command))
+        address = command['address'].replace('device', '', 1)
         if command.get('value'):
             ol = int(command['value'])
         else:
             ol = int(command.get('query', {}).get('OL.uom51'))
-        self.send_command(command['address'], ol)
+        self.send_command(address, ol)
         if ol > 0:
             self.setDriver('ST', 0)
         else:
