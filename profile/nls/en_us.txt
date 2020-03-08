@@ -25,4 +25,4 @@ GV0-shadenode-NAME = Shade Status
 ST-GV0-shadenode-NAME = Shade Status
 
 # scene
-CMD-DON-NAME = Activate
+CMD-scenenode-DON-NAME = Activate

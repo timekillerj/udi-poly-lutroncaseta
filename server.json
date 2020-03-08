@@ -9,12 +9,12 @@
     "notice": "I'm responsible if this blows up",
     "shortPoll": "120",
     "longPoll": "240",
-    "profile_version": "0.0.4",
+    "profile_version": "0.0.5",
     "credits": [
         {
             "title": "lutroncaseta: a NodeServer for Lutron Caseta integration",
             "author": "timekillerj",
-            "version": "0.0.4",
+            "version": "0.0.5",
             "date": "September 24 2019",
             "source": "https://github.com/timekillerj/udi-poly-lutroncaseta",
             "license": "https://github.com/timekillerj/udi-poly-lutroncaseta/master/LICENSE"
