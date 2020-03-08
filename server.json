@@ -9,6 +9,7 @@
     "notice": "I'm responsible if this blows up",
     "shortPoll": "120",
     "longPoll": "240",
+    "profile_version": "0.0.4",
     "credits": [
         {
             "title": "lutroncaseta: a NodeServer for Lutron Caseta integration",
