@@ -101,3 +101,7 @@ class SerenaHoneycombShade(BaseNode):
         'DOF': setClose,
         'OL': setOpenLevel,
     }
+
+class QsWirelessShade(SerenaHoneycombShade):
+
+    id = 'qswirelessshade'

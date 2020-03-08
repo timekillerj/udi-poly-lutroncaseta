@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from urllib.parse import urlencode
 from pylutron_caseta.smartbridge import Smartbridge
 
-from lutron_caseta_nodes.LutronCasetaNodes import SerenaHoneycombShade, Scene
+from lutron_caseta_nodes.LutronCasetaNodes import SerenaHoneycombShade, QsWirelessShade, Scene
 
 
 LOGGER = polyinterface.LOGGER
@@ -180,7 +180,7 @@ class LutronCasetaController(polyinterface.Controller):
         LOGGER.info('Started LutronCaseta NodeServer')
         self.poly.add_custom_config_docs("<b>To obtain oauth code, follow <a href='{}' target='_blank'>this link</a> and copy the 'code' portion of the error page url</b>".format(AUTHORIZE_URL))
         self.check_params()
-
+        self.update_profile("") # TODO: Use new polyinterface methods to check version
         if not self.lutron_bridge_ip and not self.oauth_code:
             return
 
@@ -251,6 +251,8 @@ class LutronCasetaController(polyinterface.Controller):
             NodeType = None
             if device.get('type') == "SerenaHoneycombShade":
                 NodeType = SerenaHoneycombShade
+            elif device.get('type') == "QsWirelessShade":
+                NodeType = QsWirelessShade
             if not NodeType:
                 LOGGER.error("Unknown Node Type: {}".format(device))
                 continue

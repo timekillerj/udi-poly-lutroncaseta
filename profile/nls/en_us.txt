@@ -7,17 +7,22 @@ CMD-ctl-REMOVE_NOTICES_ALL-NAME = Remove All Notices
 CMD-ctl-REMOVE_NOTICE_TEST-NAME = Remove Notice Test
 ST-ctl-ST-NAME = NodeServer Online
 
-# serenashade
+# Serena Shade
 ND-serenashade-NAME = Serena Shade
-ST-serenashade-ST-NAME = Shade Status
-CMD-DON-NAME = Open
-CMD-DOF-NAME = Close
-CMD-OL-NAME = Open Level
-ST-serenashade-LEVEL-NAME = Open Level
-CMD-serenashade-OL-NAME = Set Open Level
+
+# QsWireles Shade
+ND-qswirelessshade-NAME = Serena Shade
+
+# All shades
+ST-shadenode-ST-NAME = Shade Status
+CMD-shadenode-DON-NAME = Open
+CMD-shadenode-DOF-NAME = Close
+CMD-shadenode-OL-NAME = Open Level
+ST-shadenode-LEVEL-NAME = Open Level
+CMD-shadenode-OL-NAME = Set Open Level
 ST-GV0-NAME = Shade Status
-GV0-serenashade-NAME = Shade Status
-ST-GV0-serenashade-NAME = Shade Status
+GV0-shadenode-NAME = Shade Status
+ST-GV0-shadenode-NAME = Shade Status
 
 # scene
 CMD-DON-NAME = Activate
