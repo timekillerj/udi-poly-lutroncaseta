@@ -211,7 +211,7 @@ class LutronCasetaController(polyinterface.Controller):
         or longPoll. No need to Super this method the parent version does nothing.
         The timer can be overriden in the server.json.
         """
-        self.discover()
+        pass
 
     def longPoll(self):
         """
