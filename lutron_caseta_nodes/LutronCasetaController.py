@@ -244,6 +244,7 @@ class LutronCasetaController(polyinterface.Controller):
         Sends a DON/DOF called by start and longPoll which allow users to
         monitor that the nodeserver is still running
         """
+        LOGGER.debug("heartbeat: {}".format(self.hb))
         if self.hb == 0:
             self.reportCmd("DON",2)
             self.hb = 1
