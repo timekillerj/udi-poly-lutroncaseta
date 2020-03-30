@@ -33,6 +33,7 @@ class Scene(BaseNode):
     def activate(self, command):
         LOGGER.info("activate: command {}".format(command))
         address = command['address'].replace('scene', '', 1)
+        LOGGER.info("activate: address {}".format(address))
         self.sb.activate_scene(address)
 
     drivers = []
@@ -100,3 +101,7 @@ class SerenaHoneycombShade(BaseNode):
         'DOF': setClose,
         'OL': setOpenLevel,
     }
+
+class QsWirelessShade(SerenaHoneycombShade):
+
+    id = 'qswirelessshade'

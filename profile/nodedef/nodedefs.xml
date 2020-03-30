@@ -7,7 +7,11 @@
 			<st id="ST" editor="bool" />
 		</sts>
         <cmds>
-            <sends />
+            <sends>
+              <!-- These are for our heartbeat -->
+              <cmd id="DON" />
+              <cmd id="DOF" />
+            </sends>
             <accepts>
               <cmd id="QUERY" />
               <cmd id="DISCOVER" />
@@ -35,6 +39,24 @@
             </accepts>
         </cmds>
     </nodeDef>
+    <!-- qswirelessshade -->
+      <nodeDef id="qswirelessshade" nls="shadenode">
+          <editors />
+          <sts>
+              <st id="ST" editor="OpenClose" />
+              <st id="OL" editor="shade_status" />
+          </sts>
+          <cmds>
+              <sends />
+  	          <accepts>
+                <cmd id="OL">
+                  <p id="OL" editor="shade_status" init="OL" />
+                </cmd>
+                <cmd id="DON" />
+  	            <cmd id="DOF" />
+              </accepts>
+          </cmds>
+      </nodeDef>
   <!-- scene -->
     <nodeDef id="scene" nls="scenenode">
       <editors />

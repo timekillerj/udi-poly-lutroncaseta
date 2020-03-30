@@ -16,7 +16,7 @@ from cryptography.hazmat.primitives.serialization import load_pem_private_key
 from urllib.parse import urlencode
 from pylutron_caseta.smartbridge import Smartbridge
 
-from lutron_caseta_nodes.LutronCasetaNodes import SerenaHoneycombShade, Scene
+from lutron_caseta_nodes.LutronCasetaNodes import SerenaHoneycombShade, QsWirelessShade, Scene
 
 
 LOGGER = polyinterface.LOGGER
@@ -179,8 +179,13 @@ class LutronCasetaController(polyinterface.Controller):
     def start(self):
         LOGGER.info('Started LutronCaseta NodeServer')
         self.poly.add_custom_config_docs("<b>To obtain oauth code, follow <a href='{}' target='_blank'>this link</a> and copy the 'code' portion of the error page url</b>".format(AUTHORIZE_URL))
+        # This grabs the server.json data and checks profile_version is up to date
+        serverdata = self.poly.get_server_data(check_profile=True)
+        self.setDriver('ST', 1)
+        LOGGER.info('Started Lutron Caseta NodeServer {}'.format(serverdata['version']))
+        self.hb = 0
+        self.heartbeat()
         self.check_params()
-
         if not self.lutron_bridge_ip and not self.oauth_code:
             return
 
@@ -211,7 +216,7 @@ class LutronCasetaController(polyinterface.Controller):
         or longPoll. No need to Super this method the parent version does nothing.
         The timer can be overriden in the server.json.
         """
-        self.discover()
+        pass
 
     def longPoll(self):
         """
@@ -220,7 +225,7 @@ class LutronCasetaController(polyinterface.Controller):
         or shortPoll. No need to Super this method the parent version does nothing.
         The timer can be overriden in the server.json.
         """
-        pass
+        self.heartbeat()
 
     def query(self):
         """
@@ -232,6 +237,20 @@ class LutronCasetaController(polyinterface.Controller):
         self.check_params()
         for node in self.nodes:
             self.nodes[node].reportDrivers()
+
+    def heartbeat(self):
+        """
+        Optional.
+        Sends a DON/DOF called by start and longPoll which allow users to
+        monitor that the nodeserver is still running
+        """
+        LOGGER.debug("heartbeat: {}".format(self.hb))
+        if self.hb == 0:
+            self.reportCmd("DON",2)
+            self.hb = 1
+        else:
+            self.reportCmd("DOF",2)
+            self.hb = 0
 
     def discover(self, *args, **kwargs):
         """
@@ -251,6 +270,8 @@ class LutronCasetaController(polyinterface.Controller):
             NodeType = None
             if device.get('type') == "SerenaHoneycombShade":
                 NodeType = SerenaHoneycombShade
+            elif device.get('type') == "QsWirelessShade":
+                NodeType = QsWirelessShade
             if not NodeType:
                 LOGGER.error("Unknown Node Type: {}".format(device))
                 continue
